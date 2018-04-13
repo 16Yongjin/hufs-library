@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+  integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+  crossorigin=""></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="map" style="width: 560px; height: 670px;"></div>
+  <script>
+    var height = 670
+    var width = 560
+    
+    var boxHeight = height / 67
+    var boxWidth = width / 28
+
+    var map = L.map('map', {crs: L.CRS.Simple})
+    var bounds = [[0,0], [height,width]]
+    map.fitBounds(bounds)
+    L.imageOverlay('3f.svg', bounds).addTo(map)
+
+    var range = (from, to, inc = 1 ,l=[]) => {
+      if (!to) { to = from, from = 1 }
+      for (var i=from; i <= to; i+=inc) l.push(i)
+      return l
+    }
+
+    var getBoxBound = (x, y) => [[x*boxHeight, y*boxWidth], [(x+1)*boxHeight, (y+1)*boxWidth]]
+
+    var drawRect = (x, y) => {
+      var bnd = getBoxBound(x, y)
+      L.rectangle(bnd, {color: "#ff7800", weight: 1}).addTo(map)
+    }
+
+    var div = (a, b) => ~~(a / b)
+
+    var drawRectIdx = (idx) => {
+      var y = idx <= 36 ? [1,2,3,4,5,6][(idx-1) % 6] :
+              idx <= 44 ? [1,2,3,4][(idx-1) % 4] :
+              (i => (i = (i-45) % 24, div(i, 8) + i + 1 ))(idx)
+
+      var x = idx <= 36 ? [1,2,4,5,7,8][div(idx-1, 6)] :
+              idx <= 44 ? [10, 11][div(idx-37, 4)] :
+              (i => (i = div(i-45, 24), div(i, 2) + 13 + i ))(idx)
+      drawRect(x, y)
+    }
+
+    // range(1, 908).map(drawRectIdx)
+
+  </script>
+</body>
+</html>

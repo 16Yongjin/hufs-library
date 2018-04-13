@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <title>Document</title>
+</head>
+<body>
+    <div id="app">
+    <svg :width="28 * 20" :height="67 * 10" xmlns="http://www.w3.org/2000/svg">
+      <g v-for="y in range(1, 54)">
+        <rect v-if="y % 3 !== 0" v-for="x in range(1, 26)" :x="20 * x" :y="10 * y" width="20" height="10" :stroke="x==9 || x == 18 ? 'transparent' : 'black'" :fill="x==9 || x == 18 ? 'transparent' : 'brown'"/>
+      </g>
+      <rect v-for="i in 4" :x="20 * i" :y="10 * 55" width="20" height="10" stroke="black" fill="brown"/>
+      <rect v-for="i in 4" :x="20 * i" :y="10 * 56" width="20" height="10" stroke="black" fill="brown"/>
+      <g v-for="j in 9">
+        <rect v-if="j % 3 !== 0" v-for="i in 6" :x="20 * i" :y="10 * (57 + j)" width="20" height="10" stroke="black" fill="brown"/>
+      </g>
+    </svg>
+  </div>
+
+  <script>
+  new Vue({
+      el: '#app',
+      methods: {
+        range(from, to) {
+          const l = []
+          for (let i=from; i <= to; i++) l.push(i)
+          return l
+        }
+      }
+    })
+  </script>
+  
+</body>
+</html>
