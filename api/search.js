@@ -1,14 +1,19 @@
-const url = (query, page=1, size=10) => `http://library.hufs.ac.kr/search/Search.Result.ax?sid=1&q=TITL%3A${encodeURIComponent(query)}&eq=&mf=true&f=&br=01&cl=1+2&gr=1&rl=&page=${page}&pageSize=${size}&s=&st=&h=&cr=&py=&subj=&facet=Y&nd=&vid=0&tabID=`
+const url = (query, page, size) => `http://library.hufs.ac.kr/search/Search.Result.ax?sid=1&q=TITL%3A${encodeURIComponent(query)}&eq=&mf=true&f=&br=01&cl=1+2&gr=1&rl=&page=${page}&pageSize=${size}&s=&st=&h=&cr=&py=&subj=&facet=Y&nd=&vid=0&tabID=`
 const rq = require('request-promise')
 const cheerio = require('cheerio')
 
-const searchBooks = async (query, page, size) => {
+const searchBooks = async (query, page = 1, size = 10) => {
   try {
-
-    const body = await rq(url(query,page, size))
+    const body = await rq(url(query, page, size))
     const $ = cheerio.load(body)
+
+    const countTitle = $('.searchTitle5').text().match(/\d+/)
+    const count = countTitle && parseInt(countTitle[0])
+    if (!count || count < (parseInt(page) - 1) * size) {
+      return []
+    }
+
     const books = $('div .textArea2Inner .body')
-    
     const res = []
     $(books).each((i, book) => {
       const id = $(book).children('a').attr('href').replace(/\D+/g, '')
@@ -27,6 +32,6 @@ const searchBooks = async (query, page, size) => {
   }
 }
 
-// searchBooks('자바스크립트').then(i => console.log(i.length))
+// searchBooks('자바스크립트', 4).then(i => console.log(i.length))
 
 module.exports = searchBooks
