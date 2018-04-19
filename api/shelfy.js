@@ -23,9 +23,11 @@ const Num = s => !Number.isNaN(parseFloat(s))
 
 const Char = s => s && !!s.match(/[^1-9]/)
 
+const split = reg => s => s.split(reg)
+
 const obj = _.go(
   data,
-  _(split, _, /\n\n+/),
+  split(/\n\n+/),
   _.map(d => d.split('\n') ),
   _.map(d => d.map((s, i) => i > 0 ? s.split(/ +/) : s )),
   _.reduce((acc, v) => (acc[_.first(v)] = _.rest(v), acc), {})
