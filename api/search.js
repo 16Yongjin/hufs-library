@@ -24,7 +24,7 @@ const searchBooks = async (query, page = 1, size = 10) => {
       const [, bracketedCode, available] = info.slice(seoul, seoul+3)
       const code = bracketedCode.slice(1, -1)
       
-      res.push({ id, title, author: author.slice(2), code, available })
+      res.push({ id, title, author: author.slice(2), code, available: available.length > 3 })
     })
     return res
   } catch (e) { 
