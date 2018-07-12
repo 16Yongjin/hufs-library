@@ -1,6 +1,6 @@
 const rq = require('request-promise')
 const cheerio = require('cheerio')
-const uri = 'http://library.hufs.ac.kr/search/Search.Result.Export.ax'
+const uri = 'https://library.hufs.ac.kr/search/Search.Result.Export.ax'
 
 const cids = ['1832467', '1827290', '1824731', '1819424', '1807737', '1752689', '1752688', '1737954', '1641696', '1482984']
 
@@ -73,7 +73,7 @@ const getISBNs = async (cids) => {
   return ISBNs
 }
 
-// getISBNs(cids)
+// getISBNs(cids).then(console.log)
 
 const getOneISBN = async (cid) => {
   const ISBN = await getISBNs([cid])

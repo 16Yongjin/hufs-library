@@ -9,7 +9,6 @@ _.everyAp = function(list, ...fns) {
   return list.length === fns.length &&
          list.map((l, i) => fns[i](l)).every(Boolean)
 }
-
 const parseClass = parseFloat
 
 const parseSymbol = char => {
